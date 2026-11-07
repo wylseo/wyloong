@@ -25,10 +25,16 @@ jobs:
         with:
           gradle-version: '8.7'
 
+      - name: Show build files
+        run: |
+          git rev-parse HEAD
+          git log -1 --oneline
+          sed -n '1,40p' app/build.gradle
+
       - name: Build
         run: |
           set -o pipefail
-          gradle :app:assembleDebug --no-daemon --stacktrace 2>&1 | tee build.log
+          { git rev-parse HEAD; sed -n '1,40p' app/build.gradle; gradle :app:assembleDebug --no-daemon --stacktrace; } 2>&1 | tee build.log
 
       - name: Upload APK
         if: success()
