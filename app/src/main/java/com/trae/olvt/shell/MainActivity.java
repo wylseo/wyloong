@@ -16,14 +16,17 @@ import org.mozilla.geckoview.GeckoRuntime;
 import org.mozilla.geckoview.GeckoSession;
 import org.mozilla.geckoview.GeckoSession.PermissionDelegate.MediaCallback;
 import org.mozilla.geckoview.GeckoSession.PermissionDelegate.MediaSource;
+import org.mozilla.geckoview.GeckoSessionSettings;
 import org.mozilla.geckoview.GeckoView;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * GeckoView 壳：全屏加载本机 OLVT 前端（127.0.0.1:12393）。
- * 后端未启动时提示，可一键打开 AidLux 或重试。
+ * 后端未启动时显示提示页，可一键打开 AidLux 或重试。
  */
 public class MainActivity extends Activity {
 
@@ -34,6 +37,8 @@ public class MainActivity extends Activity {
     private GeckoSession session;
     private FrameLayout root;
     private LinearLayout fallback;
+    private boolean loadedOnce = false;
+    private long pausedAt = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +50,22 @@ public class MainActivity extends Activity {
 
         GeckoRuntime runtime = GeckoRuntime.getDefault(this);
 
+        // 页面没有 <meta name="viewport">，Gecko 默认按桌面视口(980px)排版，
+        // 在 1080x2160 的机器上会整体缩小、比例失真。强制移动视口 + 设备宽度。
+        int cssWidth = getResources().getConfiguration().screenWidthDp;
+        Map<String, Object> prefs = new HashMap<>();
+        prefs.put("browser.viewport.desktopWidth", cssWidth);
+        try {
+            runtime.getSettings().updatePrefs(prefs);
+        } catch (Throwable ignored) {
+            // 旧版本 GeckoView 无此 prefs 接口，忽略即可
+        }
+
         session = new GeckoSession();
+        GeckoSessionSettings ss = session.getSettings();
+        ss.setViewportMode(GeckoSessionSettings.VIEWPORT_MODE_MOBILE);
+        ss.setUserAgentMode(GeckoSessionSettings.USER_AGENT_MODE_MOBILE);
+
         session.setPermissionDelegate(new GeckoSession.PermissionDelegate() {
             @Override
             public void onMediaPermissionRequest(GeckoSession s, String uri,
@@ -88,6 +108,45 @@ public class MainActivity extends Activity {
                 }
             });
         }, "olvt-probe");
+        t.start();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // 首次进来 onCreate 已经加载，跳过
+        if (!loadedOnce) {
+            loadedOnce = true;
+            return;
+        }
+        // Gecko 内容进程被系统冻结/回收后，回到前台只剩白屏，重载一次即可恢复
+        if (pausedAt != 0 && System.currentTimeMillis() - pausedAt > 15000) {
+            pausedAt = 0;
+            reloadPage();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        pausedAt = System.currentTimeMillis();
+        super.onPause();
+    }
+
+    private void reloadPage() {
+        Thread t = new Thread(() -> {
+            final boolean up = probe();
+            runOnUiThread(() -> {
+                if (!up) {
+                    showFallback();
+                    return;
+                }
+                if (fallback != null) {
+                    root.removeView(fallback);
+                    fallback = null;
+                }
+                session.reload();
+            });
+        }, "olvt-reload");
         t.start();
     }
 
