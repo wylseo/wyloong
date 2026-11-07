@@ -28,7 +28,10 @@ import java.net.URL;
  */
 public class MainActivity extends Activity {
 
-    private static final String PAGE = "http://127.0.0.1:12393/index.html?v=20261107";
+    // 经本机反代加载：反代会给 index.html 补上 <meta viewport>，
+    // 否则 Gecko 按 980px 桌面视口排版，左侧面板固定吃掉约 46% 宽度。
+    private static final String PAGE =
+            "http://127.0.0.1:" + LocalProxy.PROXY_PORT + "/index.html?v=20261107";
     private static final String PROBE = "http://127.0.0.1:12393/";
     private static final int REQ_MIC = 1001;
 
@@ -42,14 +45,16 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        LocalProxy.start();
+
         root = new FrameLayout(this);
         root.setBackgroundColor(Color.BLACK);
         setContentView(root);
 
         GeckoRuntime runtime = GeckoRuntime.getDefault(this);
 
-        // 页面没有 <meta name="viewport">，Gecko 默认按桌面视口(980px)排版，
-        // 在 1080x2160 的机器上会整体缩小、比例失真。强制移动视口 + 移动 UA。
+        // 反代已给页面补上 viewport 声明，这里再显式指定移动视口 + 移动 UA，
+        // 避免个别缓存副本退回到桌面排版。
         session = new GeckoSession();
         GeckoSessionSettings ss = session.getSettings();
         ss.setViewportMode(GeckoSessionSettings.VIEWPORT_MODE_MOBILE);
