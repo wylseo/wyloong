@@ -48,6 +48,15 @@ jobs:
           name: olvt-gecko-shell-apk
           path: app/build/outputs/apk/debug/app-debug.apk
 
+      - name: Publish APK release
+        if: success()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cp app/build/outputs/apk/debug/app-debug.apk olvt-gecko-shell.apk
+          gh release delete apk-latest --yes --cleanup-tag || true
+          gh release create apk-latest olvt-gecko-shell.apk --title "OLVT GeckoView Shell (${GITHUB_SHA:0:7})" --notes "Built from $GITHUB_SHA"
+
       - name: Push build log on failure
         if: failure()
         run: |
