@@ -1,0 +1,34 @@
+plugins {
+    id("com.android.application")
+}
+
+android {
+    namespace = "com.trae.olvt.shell"
+    compileSdk = 35
+
+    defaultConfig {
+        applicationId = "com.trae.olvt.shell"
+        minSdk = 28
+        targetSdk = 34
+        versionCode = 1
+        versionName = "1.0"
+        ndk {
+            abiFilters += listOf("arm64-v8a")
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    buildTypes {
+        release {
+            isMinifyEnabled = false
+        }
+    }
+}
+
+dependencies {
+    implementation("org.mozilla.geckoview:geckoview-arm64-v8a:159.0.20261102144711")
+}
