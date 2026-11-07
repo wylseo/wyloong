@@ -21,8 +21,6 @@ import org.mozilla.geckoview.GeckoView;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * GeckoView 壳：全屏加载本机 OLVT 前端（127.0.0.1:12393）。
@@ -51,16 +49,7 @@ public class MainActivity extends Activity {
         GeckoRuntime runtime = GeckoRuntime.getDefault(this);
 
         // 页面没有 <meta name="viewport">，Gecko 默认按桌面视口(980px)排版，
-        // 在 1080x2160 的机器上会整体缩小、比例失真。强制移动视口 + 设备宽度。
-        int cssWidth = getResources().getConfiguration().screenWidthDp;
-        Map<String, Object> prefs = new HashMap<>();
-        prefs.put("browser.viewport.desktopWidth", cssWidth);
-        try {
-            runtime.getSettings().updatePrefs(prefs);
-        } catch (Throwable ignored) {
-            // 旧版本 GeckoView 无此 prefs 接口，忽略即可
-        }
-
+        // 在 1080x2160 的机器上会整体缩小、比例失真。强制移动视口 + 移动 UA。
         session = new GeckoSession();
         GeckoSessionSettings ss = session.getSettings();
         ss.setViewportMode(GeckoSessionSettings.VIEWPORT_MODE_MOBILE);
