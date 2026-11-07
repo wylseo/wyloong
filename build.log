@@ -1,15 +1,15 @@
 To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.7/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
 Daemon will be stopped at the end of the build 
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run-1794066096867.json
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run-1794066258566.json
 
 FAILURE: Build failed with an exception.
 
 * Where:
-Build file '/home/runner/work/wyloong/wyloong/app/build.gradle' line: 16
+Build file '/home/runner/work/wyloong/wyloong/app/build.gradle' line: 27
 
 * What went wrong:
 A problem occurred evaluating project ':app'.
-> Could not find method listOf() for arguments [arm64-v8a] on object of type com.android.build.gradle.internal.dsl.NdkOptions.
+> Could not set unknown property 'isMinifyEnabled' for BuildType$AgpDecorated_Decorated{name=release, debuggable=false, testCoverageEnabled=false, jniDebuggable=false, pseudoLocalesEnabled=false, renderscriptDebuggable=false, renderscriptOptimLevel=3, minifyEnabled=false, zipAlignEnabled=true, signingConfig=null, embedMicroApp=true, mBuildConfigFields={}, mResValues={}, mProguardFiles=[], mConsumerProguardFiles=[], mManifestPlaceholders={}} of type com.android.build.gradle.internal.dsl.BuildType$AgpDecorated.
 
 * Try:
 > Run with --info or --debug option to get more log output.
@@ -183,21 +183,39 @@ org.gradle.api.GradleScriptException: A problem occurred evaluating project ':ap
 	at org.gradle.launcher.daemon.server.DaemonStateCoordinator$1.run(DaemonStateCoordinator.java:297)
 	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
 	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:47)
-Caused by: org.gradle.internal.metaobject.AbstractDynamicObject$CustomMessageMissingMethodException: Could not find method listOf() for arguments [arm64-v8a] on object of type com.android.build.gradle.internal.dsl.NdkOptions.
-	at org.gradle.internal.metaobject.AbstractDynamicObject$CustomMissingMethodExecutionFailed.<init>(AbstractDynamicObject.java:190)
-	at org.gradle.internal.metaobject.AbstractDynamicObject.methodMissingException(AbstractDynamicObject.java:184)
-	at org.gradle.internal.metaobject.ConfigureDelegate.invokeMethod(ConfigureDelegate.java:84)
-	at build_8vlw9ncc7lao0s983rc5gjzdx$_run_closure1$_closure3$_closure6.doCall$original(/home/runner/work/wyloong/wyloong/app/build.gradle:16)
-	at build_8vlw9ncc7lao0s983rc5gjzdx$_run_closure1$_closure3$_closure6.doCall(/home/runner/work/wyloong/wyloong/app/build.gradle)
+Caused by: groovy.lang.MissingPropertyException: Could not set unknown property 'isMinifyEnabled' for BuildType$AgpDecorated_Decorated{name=release, debuggable=false, testCoverageEnabled=false, jniDebuggable=false, pseudoLocalesEnabled=false, renderscriptDebuggable=false, renderscriptOptimLevel=3, minifyEnabled=false, zipAlignEnabled=true, signingConfig=null, embedMicroApp=true, mBuildConfigFields={}, mResValues={}, mProguardFiles=[], mConsumerProguardFiles=[], mManifestPlaceholders={}} of type com.android.build.gradle.internal.dsl.BuildType$AgpDecorated.
+	at org.gradle.internal.metaobject.AbstractDynamicObject.setMissingProperty(AbstractDynamicObject.java:118)
+	at org.gradle.internal.metaobject.ConfigureDelegate.setProperty(ConfigureDelegate.java:102)
+	at org.gradle.internal.classpath.declarations.GroovyDynamicDispatchInterceptors.intercept_setGroovyObjectProperty(GroovyDynamicDispatchInterceptors.java:57)
+	at build_8vlw9ncc7lao0s983rc5gjzdx$_run_closure1$_closure5$_closure7.doCall$original(/home/runner/work/wyloong/wyloong/app/build.gradle:27)
+	at build_8vlw9ncc7lao0s983rc5gjzdx$_run_closure1$_closure5$_closure7.doCall(/home/runner/work/wyloong/wyloong/app/build.gradle)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
 	at org.gradle.util.internal.ClosureBackedAction.execute(ClosureBackedAction.java:73)
 	at org.gradle.util.internal.ConfigureUtil.configureTarget(ConfigureUtil.java:155)
 	at org.gradle.util.internal.ConfigureUtil.configure(ConfigureUtil.java:106)
+	at org.gradle.api.internal.DefaultNamedDomainObjectCollection$ContainerElementsDynamicObject.tryInvokeMethod(DefaultNamedDomainObjectCollection.java:571)
+	at org.gradle.internal.metaobject.BeanDynamicObject$MetaClassAdapter.invokeMethod(BeanDynamicObject.java:561)
+	at org.gradle.internal.metaobject.BeanDynamicObject.tryInvokeMethod(BeanDynamicObject.java:218)
+	at org.gradle.internal.metaobject.CompositeDynamicObject.tryInvokeMethod(CompositeDynamicObject.java:99)
+	at org.gradle.internal.extensibility.MixInClosurePropertiesAsMethodsDynamicObject.tryInvokeMethod(MixInClosurePropertiesAsMethodsDynamicObject.java:38)
+	at org.gradle.internal.metaobject.ConfigureDelegate.invokeMethod(ConfigureDelegate.java:65)
+	at build_8vlw9ncc7lao0s983rc5gjzdx$_run_closure1$_closure5.doCall$original(/home/runner/work/wyloong/wyloong/app/build.gradle:26)
+	at build_8vlw9ncc7lao0s983rc5gjzdx$_run_closure1$_closure5.doCall(/home/runner/work/wyloong/wyloong/app/build.gradle)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at org.gradle.util.internal.ClosureBackedAction.execute(ClosureBackedAction.java:73)
+	at org.gradle.util.internal.ConfigureUtil.configureTarget(ConfigureUtil.java:155)
+	at org.gradle.util.internal.ConfigureUtil.configureSelf(ConfigureUtil.java:143)
+	at org.gradle.api.internal.AbstractNamedDomainObjectContainer.configure(AbstractNamedDomainObjectContainer.java:91)
+	at org.gradle.api.internal.AbstractNamedDomainObjectContainer.configure(AbstractNamedDomainObjectContainer.java:38)
+	at org.gradle.util.internal.ConfigureUtil.configure(ConfigureUtil.java:104)
 	at org.gradle.util.internal.ConfigureUtil$WrappedConfigureAction.execute(ConfigureUtil.java:167)
-	at com.android.build.gradle.internal.dsl.BaseFlavor.ndk(BaseFlavor.kt:332)
-	at com.android.build.gradle.internal.dsl.DefaultConfig$AgpDecorated_Decorated.ndk(Unknown Source)
+	at com.android.build.gradle.internal.dsl.CommonExtensionImpl.buildTypes(CommonExtensionImpl.kt:289)
+	at com.android.build.gradle.internal.dsl.BaseAppModuleExtension.buildTypes(BaseAppModuleExtension.kt)
+	at com.android.build.gradle.internal.dsl.BaseAppModuleExtension_Decorated.buildTypes(Unknown Source)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -206,27 +224,7 @@ Caused by: org.gradle.internal.metaobject.AbstractDynamicObject$CustomMessageMis
 	at org.gradle.internal.metaobject.CompositeDynamicObject.tryInvokeMethod(CompositeDynamicObject.java:99)
 	at org.gradle.internal.extensibility.MixInClosurePropertiesAsMethodsDynamicObject.tryInvokeMethod(MixInClosurePropertiesAsMethodsDynamicObject.java:38)
 	at org.gradle.internal.metaobject.ConfigureDelegate.invokeMethod(ConfigureDelegate.java:65)
-	at build_8vlw9ncc7lao0s983rc5gjzdx$_run_closure1$_closure3.doCall$original(/home/runner/work/wyloong/wyloong/app/build.gradle:15)
-	at build_8vlw9ncc7lao0s983rc5gjzdx$_run_closure1$_closure3.doCall(/home/runner/work/wyloong/wyloong/app/build.gradle)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at org.gradle.util.internal.ClosureBackedAction.execute(ClosureBackedAction.java:73)
-	at org.gradle.util.internal.ConfigureUtil.configureTarget(ConfigureUtil.java:155)
-	at org.gradle.util.internal.ConfigureUtil.configure(ConfigureUtil.java:106)
-	at org.gradle.util.internal.ConfigureUtil$WrappedConfigureAction.execute(ConfigureUtil.java:167)
-	at com.android.build.gradle.internal.dsl.CommonExtensionImpl.defaultConfig(CommonExtensionImpl.kt:335)
-	at com.android.build.gradle.internal.dsl.BaseAppModuleExtension.defaultConfig(BaseAppModuleExtension.kt)
-	at com.android.build.gradle.internal.dsl.BaseAppModuleExtension_Decorated.defaultConfig(Unknown Source)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at org.gradle.internal.metaobject.BeanDynamicObject$MetaClassAdapter.invokeMethod(BeanDynamicObject.java:541)
-	at org.gradle.internal.metaobject.BeanDynamicObject.tryInvokeMethod(BeanDynamicObject.java:218)
-	at org.gradle.internal.metaobject.CompositeDynamicObject.tryInvokeMethod(CompositeDynamicObject.java:99)
-	at org.gradle.internal.extensibility.MixInClosurePropertiesAsMethodsDynamicObject.tryInvokeMethod(MixInClosurePropertiesAsMethodsDynamicObject.java:38)
-	at org.gradle.internal.metaobject.ConfigureDelegate.invokeMethod(ConfigureDelegate.java:65)
-	at build_8vlw9ncc7lao0s983rc5gjzdx$_run_closure1.doCall$original(/home/runner/work/wyloong/wyloong/app/build.gradle:9)
+	at build_8vlw9ncc7lao0s983rc5gjzdx$_run_closure1.doCall$original(/home/runner/work/wyloong/wyloong/app/build.gradle:25)
 	at build_8vlw9ncc7lao0s983rc5gjzdx$_run_closure1.doCall(/home/runner/work/wyloong/wyloong/app/build.gradle)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
