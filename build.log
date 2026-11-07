@@ -1,6 +1,41 @@
+423f2157ac0bcfd7b46c89dbbc4c29b62fc4cf18
+plugins {
+    id("com.android.application")
+}
+
+android {
+    namespace = "com.trae.olvt.shell"
+    compileSdk = 35
+
+    defaultConfig {
+        applicationId = "com.trae.olvt.shell"
+        minSdk = 28
+        targetSdk = 34
+        versionCode = 1
+        versionName = "1.0"
+        ndk {
+            abiFilters 'arm64-v8a'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    buildTypes {
+        release {
+            isMinifyEnabled = false
+        }
+    }
+}
+
+dependencies {
+    implementation("org.mozilla.geckoview:geckoview-arm64-v8a:159.0.20261102144711")
+}
 To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.7/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
 Daemon will be stopped at the end of the build 
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run-1794066258566.json
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_2-1794066485852.json
 
 FAILURE: Build failed with an exception.
 
