@@ -25,8 +25,10 @@ final class LocalProxy {
     static final int PROXY_PORT = 12401;
     private static final String TARGET_HOST = "127.0.0.1";
     private static final int TARGET_PORT = 12393;
+    // initial-scale=0.9：布局视口放宽到约 400 CSS px 再整体缩到 90%，
+    // 视觉上所有元素（文字/按钮/立绘）小 10%，但仍铺满屏幕。
     private static final String VIEWPORT_TAG =
-            "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, viewport-fit=cover\">";
+            "<meta name=\"viewport\" content=\"width=device-width, initial-scale=0.9, viewport-fit=cover\">";
 
     private static ServerSocket server;
 
